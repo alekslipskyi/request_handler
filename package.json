@@ -1,0 +1,37 @@
+{
+  "name": "redux-request-async",
+  "version": "1.0.8",
+  "description": "Request handle for redux",
+  "main": "dist/index.js",
+  "dependencies": {
+    "axios": "0.19.0",
+    "lodash.omit": "4.5.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "7.4.4"
+  },
+  "scripts": {
+    "build": "babel src -d dist",
+    "deploy": "npm run build && npm version patch && npm publish"
+  },
+  "npmFileMap": [
+    {
+      "basePath": "/dist/",
+      "files": [
+        "*.js"
+      ]
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexlipskiy-ctrl/request-handler.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexlipskiy-ctrl/request-handler/issues"
+  },
+  "homepage": "https://github.com/alexlipskiy-ctrl/request-handler#readme"
+}

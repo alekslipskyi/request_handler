@@ -32,7 +32,7 @@ export default class HttpRequestHandler {
 		this.action = action;
 		this.dispatch = dispatch;
 		this.getState = getState;
-		this.config = config;
+		this.config = { ...config, ...HttpRequestHandler.defaultConfig };
 		this.next = next;
 		this.agent = axios.create({ baseURL: config.apiUrl || '' });
 	}

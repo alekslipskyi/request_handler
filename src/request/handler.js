@@ -137,7 +137,7 @@ export default class HttpRequestHandler {
 		const { requestId, actionsAfterSuccess, before, isEnsureToSend, afterFailed } = action;
 
 		if (config.hooks.before) config.hooks.before({ action, getState, dispatch, agent });
-		if (before) this.agent.interceptors.request(this.convertFn(before)(dispatch, getState));
+		if (before) before(getState(), dispatch);
 
 		if (isEnsureToSend) this.ensureToSend(requestId);
 

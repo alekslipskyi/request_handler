@@ -153,7 +153,10 @@ export default class HttpRequestHandler {
 			const response = await this.buildRequest();
 			response.data = response.data || {};
 
-			const data = response.data;
+			const data =
+				this.action.target
+					? this.dataToTarget({ response: response.data, ...config.defaultPayload.success })
+					: response.data;
 			if (actionsAfterSuccess) this.fireAnotherActions(actionsAfterSuccess);
 			if (requestState.SUCCESS) this.next({ type: requestState.SUCCESS, data, ...this.getDataFromAction() });
 

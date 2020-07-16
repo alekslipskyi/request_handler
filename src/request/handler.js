@@ -151,7 +151,6 @@ export default class HttpRequestHandler {
 
 		try {
 			const response = await this.buildRequest();
-			response.data = response.data || {};
 
 			const data =
 				this.action.target

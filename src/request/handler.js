@@ -38,7 +38,7 @@ export default class HttpRequestHandler {
 
 		const axiosConfig = {};
 
-		if (action.isAuthReq) {
+		if (action.isAuthReq && get(getState(), config.pathToToken)) {
 			axiosConfig.headers = {
 				"Authorization": get(getState(), config.pathToToken)
 			}

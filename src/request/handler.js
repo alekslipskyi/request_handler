@@ -1,5 +1,6 @@
 import axios from 'axios';
 import omit from 'lodash.omit';
+import get from 'lodash.get';
 import { addRequestToQueue, removeRequestFromQueue } from './reducer';
 
 export default class HttpRequestHandler {
@@ -34,7 +35,16 @@ export default class HttpRequestHandler {
 		this.getState = getState;
 		this.config = { ...config, ...HttpRequestHandler.defaultConfig };
 		this.next = next;
-		this.agent = axios.create({ baseURL: config.apiUrl || '' });
+
+		const axiosConfig = {};
+
+		if (action.isAuthReq) {
+			axiosConfig.headers = {
+				"Authorization": get(getState(), config.pathToToken)
+			}
+		}
+
+		this.agent = axios.create({ baseURL: config.apiUrl || '', ...axiosConfig });
 	}
 
 	convertFn = fn => {

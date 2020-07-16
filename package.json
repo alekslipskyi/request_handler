@@ -1,6 +1,6 @@
 {
   "name": "redux-request-async",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Request handle for redux",
   "main": "dist/index.js",
   "dependencies": {

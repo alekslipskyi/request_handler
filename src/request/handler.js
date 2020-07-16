@@ -40,7 +40,7 @@ export default class HttpRequestHandler {
 
 		if (action.isAuthReq && get(getState(), config.pathToToken)) {
 			axiosConfig.headers = {
-				"Authorization": get(getState(), config.pathToToken)
+				"Authorization": `Bearer ${get(getState(), config.pathToToken)}`
 			}
 		}
 

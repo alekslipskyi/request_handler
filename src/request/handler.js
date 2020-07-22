@@ -180,6 +180,9 @@ export default class HttpRequestHandler {
 			if (requestState.FAILED) {
 				this.next({
 					type: requestState.FAILED,
+					status: err.request.status,
+					message: err.request.statusText,
+					body: err.request.body,
 					data: this.dataToTarget({
 						...config.defaultPayload.failed,
 					}),

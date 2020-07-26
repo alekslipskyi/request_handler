@@ -170,7 +170,7 @@ export default class HttpRequestHandler {
 			if (requestState.SUCCESS) this.next({ type: requestState.SUCCESS, data, ...this.getDataFromAction() });
 
 			if (config.hooks.after) config.hooks.after({ data, getState, dispatch });
-			if (config.hooks.onSuccessRequest && response.status < 300) config.hooks.onSuccessRequest({ data, store: { getState, dispatch } });
+			if (action.onSuccessRequest && response.status < 300) config.hooks.onSuccessRequest({ data, store: { getState, dispatch } });
 
 			return data;
 		} catch (err) {

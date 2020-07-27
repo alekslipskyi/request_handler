@@ -171,12 +171,12 @@ export default class HttpRequestHandler {
 
 			if (config.hooks.after) config.hooks.after({ data, getState, dispatch });
 			if (action.onSuccessRequest && response.status < 300) action.onSuccessRequest({ data, store: { getState, dispatch } });
-			if (onFailedRequest && response.status >= 400) onFailedRequest({ data, store: { getState, dispatch } });
+			if (onFailedRequest && response.status >= 400) onFailedRequest({ response, store: { getState, dispatch } });
 
 			return data;
 		} catch (err) {
 			if (config.hooks.afterFailed) config.hooks.afterFailed({ err, getState, dispatch });
-			if (onFailedRequest) onFailedRequest({ request: err.request, store: { getState, dispatch } })
+			if (onFailedRequest) onFailedRequest({ response: err.request, store: { getState, dispatch } })
 
 			if (requestState.FAILED) {
 				this.next({

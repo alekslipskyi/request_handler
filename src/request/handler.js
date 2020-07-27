@@ -144,7 +144,7 @@ export default class HttpRequestHandler {
 
 	send = async () => {
 		const { requestState, getState, action, dispatch, config, agent } = this;
-		const { requestId, actionsAfterSuccess, before, isEnsureToSend, afterFailed } = action;
+		const { requestId, actionsAfterSuccess, before, isEnsureToSend, afterFailed, onFailedRequest } = action;
 
 		if (config.hooks.before) config.hooks.before({ action, getState, dispatch, agent });
 		if (before) before(getState(), dispatch);
@@ -171,11 +171,12 @@ export default class HttpRequestHandler {
 
 			if (config.hooks.after) config.hooks.after({ data, getState, dispatch });
 			if (action.onSuccessRequest && response.status < 300) action.onSuccessRequest({ data, store: { getState, dispatch } });
+			if (onFailedRequest && response.status >= 400) onFailedRequest({ data, store: { getState, dispatch } });
 
 			return data;
 		} catch (err) {
 			if (config.hooks.afterFailed) config.hooks.afterFailed({ err, getState, dispatch });
-			if (afterFailed) afterFailed(this.dispatch, this.getState);
+			if (onFailedRequest) onFailedRequest({ request: err.request, store: { getState, dispatch } })
 
 			if (requestState.FAILED) {
 				this.next({

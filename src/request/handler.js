@@ -47,34 +47,15 @@ export default class HttpRequestHandler {
 		this.agent = axios.create({ baseURL: config.apiUrl || '', ...axiosConfig });
 	}
 
-	convertFn = fn => {
-		const { action, reducers } = this;
-		const { reducer } = action;
-
-		if (reducer && typeof fn === 'string') {
-			return reducers[reducer][fn];
-		}
-
-		return fn;
-	};
-
 	generateRequestId = (length = 14) => Math.random().toString(length).replace('0.', '');
 
 	fireAnotherActions = actions => setTimeout(() => Promise.all(actions.map(action => this.dispatch(action))), 0);
 
 	buildRequest = async () => {
 		const { agent, getState, action, dispatch } = this;
-		const { request, after, preferRequest } = action;
-		let response;
-		const req = await (preferRequest ? agent.request(preferRequest) : request(agent, getState, dispatch));
+		const { request } = action;
 
-		if (after) {
-			response = await this.convertFn(after)(req, this.dispatch, this.getState);
-
-			if (!response) response = req;
-		} else response = req;
-
-		return response;
+		return request(agent, { getState, dispatch });
 	};
 
 	parseActionsAfterSuccess = actions => {

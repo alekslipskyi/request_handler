@@ -33,7 +33,7 @@ export default class HttpRequestHandler {
 		this.action = action;
 		this.dispatch = dispatch;
 		this.getState = getState;
-		this.config = { ...config, ...HttpRequestHandler.defaultConfig };
+		this.config = { ...HttpRequestHandler.defaultConfig, ...config };
 		this.next = next;
 
 		const axiosConfig = {};

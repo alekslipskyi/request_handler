@@ -174,6 +174,13 @@ export default class HttpRequestHandler {
 					}),
 					...this.getDataFromAction(),
 				});
+			} else if (err.request) {
+				this.next({
+					type: "common/REQUEST_FAILED",
+					status: err.request.status,
+					message: err.request.statusText,
+					body: err.request.body
+				});
 			}
 
 			return Promise.reject(err);

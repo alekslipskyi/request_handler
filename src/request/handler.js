@@ -5,7 +5,7 @@ import { addRequestToQueue, removeRequestFromQueue } from './reducer';
 
 export default class HttpRequestHandler {
 	static reservedKeys = [
-		'types', 'type', 'requestId', 'request', 'data',
+		'types', 'type', 'requestId', 'request', 'data', 'origin',
 		'actionsAfterSuccess', 'isAuthReq', 'before', 'isEnsureToSend', 'afterFailed',
 	];
 
@@ -43,6 +43,8 @@ export default class HttpRequestHandler {
 				"Authorization": `Bearer ${get(getState(), config.pathToToken)}`
 			}
 		}
+
+		this.axiosConfig = axiosConfig;
 
 		this.agent = axios.create({ baseURL: config.apiUrl || '', ...axiosConfig });
 	}
@@ -125,7 +127,9 @@ export default class HttpRequestHandler {
 
 	send = async () => {
 		const { requestState, getState, action, dispatch, config, agent } = this;
-		const { requestId, actionsAfterSuccess, before, isEnsureToSend, afterFailed, onFailedRequest } = action;
+		const { requestId, actionsAfterSuccess, before, isEnsureToSend, origin, onFailedRequest } = action;
+
+		if (origin) this.agent = axios.create({ baseURL: origin, ...this.axiosConfig });
 
 		if (config.hooks.before) config.hooks.before({ action, getState, dispatch, agent });
 		if (before) before(getState(), dispatch);
